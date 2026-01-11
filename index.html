@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Для Милены ❤️</title>
+    <title>Для моей Милены ❤️</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -19,28 +19,29 @@
             background: radial-gradient(circle at 15% 15%, rgba(255, 179, 193, 0.5) 0%, transparent 45%), 
                         radial-gradient(circle at 85% 85%, rgba(255, 77, 109, 0.4) 0%, transparent 45%); }
 
-        .container { width: 90%; max-width: 400px; background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 35px; padding: 40px 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); text-align: center; border: 1px solid rgba(255,255,255,0.5); animation: fadeIn 0.8s ease-out; }
+        .container { width: 92%; max-width: 400px; background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 35px; padding: 30px 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); text-align: center; border: 1px solid rgba(255,255,255,0.5); animation: fadeIn 0.8s ease-out; overflow-y: auto; max-height: 95vh; }
         
-        h1 { font-family: 'Great Vibes', cursive; font-size: 3.8rem; color: var(--rose); margin: 0; }
-        .sub-text { color: #999; font-size: 0.8rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
-        p { color: #444; line-height: 1.6; font-size: 1.1rem; margin-bottom: 35px; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--rose); margin: 0; }
+        .sub-text { color: #999; font-size: 0.7rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
         
-        .btn-wrap { display: flex; flex-direction: column; gap: 15px; }
-        .btn { padding: 20px; border-radius: 25px; border: none; font-size: 1.2rem; font-weight: bold; font-family: 'Comfortaa'; cursor: pointer; transition: transform 0.2s, opacity 0.2s; width: 100%; }
-        .btn:active { transform: scale(0.96); }
+        .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
+        .timer-box { background: white; padding: 12px; border-radius: 18px; border: 1px solid #ffeef2; }
+        .timer-val { display: block; font-size: 1.4rem; font-weight: bold; color: var(--rose); }
+        .timer-lab { font-size: 0.6rem; color: #bbb; text-transform: uppercase; }
 
-        #yesBtn { background: var(--rose); color: white; box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4); }
-        #noBtn { background: #fff; color: #888; border: 1px solid #ddd; font-size: 1rem; }
+        .status-card { background: #fff; padding: 15px; border-radius: 25px; margin-top: 10px; border: 1px solid #ffeef2; }
+        .status-label { font-size: 0.65rem; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .current-status { font-size: 1.2rem; color: var(--rose); font-weight: bold; margin-bottom: 12px; }
+        select { width: 100%; padding: 10px; border-radius: 12px; border: 1px solid #eee; font-family: 'Comfortaa'; background: #fafafa; color: #666; cursor: pointer; }
 
-        .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 25px 0; }
-        .timer-box { background: white; padding: 20px; border-radius: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #ffeef2; }
-        .timer-val { display: block; font-size: 1.8rem; font-weight: bold; color: var(--rose); }
-        .timer-lab { font-size: 0.7rem; color: #bbb; text-transform: uppercase; }
+        .compliment-box { background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 20px; margin-top: 15px; border: 1px solid #ffeef2; border-left: 5px solid var(--rose); font-style: italic; color: #555; font-size: 0.9rem; line-height: 1.5; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
 
-        .compliment-box { background: #fff; padding: 25px; border-radius: 25px; font-style: italic; border-left: 6px solid var(--rose); margin-top: 15px; color: #555; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
-        
+        .btn { padding: 18px; border-radius: 25px; border: none; font-size: 1.1rem; font-weight: bold; font-family: 'Comfortaa'; cursor: pointer; transition: 0.2s; width: 100%; }
+        #yesBtn { background: var(--rose); color: white; margin-top: 20px; }
+        #noBtn { background: transparent; color: #ccc; margin-top: 10px; font-size: 0.9rem; }
+
         .hide { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -48,10 +49,9 @@
 <div class="bg-blobs"></div>
 
 <div class="container" id="screen1">
-    <div style="font-size: 3rem; margin-bottom: 15px;">🌸</div>
     <h1>Милена</h1>
-    <div class="sub-text">Твоё сердце ждет ответа</div>
-    <p>С самой первой нашей встречи я понял, что ты — особенная. Я хочу, чтобы этот момент стал началом чего-то прекрасного. <br><br><b>Ты согласна стать моей девушкой?</b></p>
+    <div class="sub-text">Важный момент</div>
+    <p style="color: #444; font-size: 1.1rem; line-height: 1.5;">Ты — лучшее, что случилось со мной за долгое время. Каждая минута с тобой бесценна. <br><br><b>Ты согласна быть моей?</b></p>
     <div class="btn-wrap">
         <button class="btn" id="yesBtn" onclick="acceptLove()">ДА!</button>
         <button class="btn" id="noBtn" onclick="refuseLove()">Нет</button>
@@ -59,21 +59,37 @@
 </div>
 
 <div class="container hide" id="screen2">
-    <div class="sub-text">Наша история началась</div>
-    <h1>Мы вместе ❤️</h1>
+    <div class="sub-text">Мы вместе ❤️</div>
+    
     <div class="timer-grid">
         <div class="timer-box"><span class="timer-val" id="d">0</span><span class="timer-lab">дней</span></div>
         <div class="timer-box"><span class="timer-val" id="h">0</span><span class="timer-lab">часов</span></div>
         <div class="timer-box"><span class="timer-val" id="m">0</span><span class="timer-lab">минут</span></div>
         <div class="timer-box"><span class="timer-val" id="s">0</span><span class="timer-lab">секунд</span></div>
     </div>
+
+    <div class="status-card">
+        <span class="status-label">Как мне назвать тебя сегодня:</span>
+        <div class="current-status" id="displayStatus">Загрузка...</div>
+        <select id="statusSelect" onchange="updateStatus(this.value)">
+            <option value="" disabled selected>Кто ты сегодня?</option>
+            <option value="Солнышко ☀️">Солнышко ☀️</option>
+            <option value="Любимая ❤️">Любимая ❤️</option>
+            <option value="Принцесса 👑">Принцесса 👑</option>
+            <option value="Моя радость ✨">Моя радость ✨</option>
+            <option value="Милашка 😊">Милашка 😊</option>
+            <option value="Вреднюка 😈">Вреднюка 😈</option>
+            <option value="Счастье моё 🌸">Счастье моё 🌸</option>
+            <option value="Королева 👸">Королева 👸</option>
+        </select>
+    </div>
+
     <div class="compliment-box" id="compText"></div>
 </div>
 
 <div class="container hide" id="screenRefuse">
-    <div style="font-size: 3rem; margin-bottom: 15px;">✨</div>
-    <h1>Я уважаю твой выбор</h1>
-    <p>Спасибо за честность. Для меня было важно поделиться этим с тобой. Надеюсь, мы останемся в добрых отношениях.</p>
+    <h1>Я уважаю выбор</h1>
+    <p>Спасибо за твою искренность.</p>
 </div>
 
 <script>
@@ -92,33 +108,48 @@
     const db = firebase.database();
 
     const compliments = [
-        "Твоя улыбка — самое теплое, что я знаю.",
-        "Милена, в тебе живет целый мир доброты.",
-        "Ты невероятно красивая, когда мечтаешь.",
-        "С тобой я чувствую себя по-настоящему счастливым.",
-        "Обожаю твой голос и твой смех.",
-        "Ты — самое прекрасное событие в моей жизни.",
-        "Твои глаза светятся ярче любых звезд.",
-        "Люблю тебя больше с каждой секундой."
+        "Твоя улыбка — моё любимое зрелище.", "Ты невероятно талантлива во всем.", "У тебя самое доброе сердце.", 
+        "Твой смех — лучшая музыка.", "Ты делаешь меня лучше каждый день.", "Твои глаза светятся добротой.",
+        "Обожаю твой стиль и вкус.", "Ты — моё главное вдохновение.", "С тобой я чувствую себя дома.",
+        "Твоя поддержка значит для меня всё.", "Ты очень умная и мудрая.", "Твоя нежность меня покоряет.",
+        "Рядом с тобой я по-настоящему счастлив.", "Ты — самая красивая девушка, которую я знаю.",
+        "Твой голос успокаивает меня.", "Ты уникальна, такой больше нет.", "У тебя потрясающее чувство юмора.",
+        "Я горжусь тем, что ты со мной.", "Ты — моё маленькое чудо.", "Обожаю твои искренние эмоции.",
+        "Ты умеешь находить прекрасное в мелочах.", "Твоя забота — это дар.", "Ты светишься изнутри.",
+        "Мне нравится, как ты думаешь.", "Ты — воплощение женственности.", "Твои объятия — моё безопасное место.",
+        "Ты заслуживаешь всего самого лучшего в мире.", "Люблю твой взгляд.", "Ты невероятно сильная личность.",
+        "С тобой любая прогулка — приключение.", "Ты — мой самый близкий человек.", "У тебя золотые руки.",
+        "Твоя энергия заряжает всех вокруг.", "Ты — моё солнце в пасмурный день.", "Обожаю твою непосредственность.",
+        "Ты делаешь этот мир красивее.", "Твоя интуиция меня поражает.", "Ты очень искренняя, и это редкость.",
+        "Я ценю каждую секунду рядом с тобой.", "Ты — моя мечта, ставшая реальностью.", "Ты самая обаятельная.",
+        "Твой оптимизм заразителен.", "Ты умеешь слушать и понимать без слов.", "Ты — моё сокровище.",
+        "У тебя безупречная улыбка.", "Ты очень важна для меня.", "Твоя доброта делает тебя еще красивее.",
+        "Я влюбляюсь в тебя каждый день заново.", "Ты — моё счастье.", "Люблю тебя бесконечно!"
     ];
 
-    // Проверка базы при входе
     db.ref('loveDate').on('value', (snapshot) => {
         if (snapshot.val()) showTimerScreen(snapshot.val());
     });
 
+    db.ref('currentStatus').on('value', (snapshot) => {
+        document.getElementById('displayStatus').innerText = snapshot.val() || "Моя радость ❤️";
+    });
+
     function acceptLove() {
-        const now = Date.now();
-        db.ref('loveDate').set(now);
-        db.ref('status').set("ACCEPTED");
+        db.ref('loveDate').set(Date.now());
+        db.ref('currentStatus').set("Любимая ❤️");
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
+    function updateStatus(val) {
+        if (val) {
+            db.ref('currentStatus').set(val);
+            confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, colors: ['#ff4d6d'] });
+        }
+    }
+
     function refuseLove() {
-        db.ref('refusals').push({
-            time: new Date().toLocaleString(),
-            user: "Milena"
-        });
+        db.ref('refusals').push({ time: new Date().toLocaleString() });
         document.getElementById('screen1').classList.add('hide');
         document.getElementById('screenRefuse').classList.remove('hide');
     }
@@ -137,7 +168,7 @@
         }, 1000);
 
         const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-        document.getElementById('compText').innerText = "Комплимент дня: " + compliments[dayOfYear % compliments.length];
+        document.getElementById('compText').innerText = "💖 " + compliments[dayOfYear % compliments.length];
     }
 </script>
 </body>
