@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Для Милены ❤️</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --rose: #ff4d6d; --bg: #fff0f3; --glass: rgba(255, 255, 255, 0.75); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Comfortaa', cursive; background: var(--bg); overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        
+        .bg-blobs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+            background: radial-gradient(circle at 15% 15%, rgba(255, 179, 193, 0.5) 0%, transparent 45%), 
+                        radial-gradient(circle at 85% 85%, rgba(255, 77, 109, 0.4) 0%, transparent 45%); }
+
+        .container { width: 90%; max-width: 400px; background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 35px; padding: 40px 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); text-align: center; border: 1px solid rgba(255,255,255,0.5); animation: fadeIn 0.8s ease-out; }
+        
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3.8rem; color: var(--rose); margin: 0; }
+        .sub-text { color: #999; font-size: 0.8rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
+        p { color: #444; line-height: 1.6; font-size: 1.1rem; margin-bottom: 35px; }
+        
+        .btn-wrap { display: flex; flex-direction: column; gap: 15px; }
+        .btn { padding: 20px; border-radius: 25px; border: none; font-size: 1.2rem; font-weight: bold; font-family: 'Comfortaa'; cursor: pointer; transition: transform 0.2s, opacity 0.2s; width: 100%; }
+        .btn:active { transform: scale(0.96); }
+
+        #yesBtn { background: var(--rose); color: white; box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4); }
+        #noBtn { background: #fff; color: #888; border: 1px solid #ddd; font-size: 1rem; }
+
+        .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 25px 0; }
+        .timer-box { background: white; padding: 20px; border-radius: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #ffeef2; }
+        .timer-val { display: block; font-size: 1.8rem; font-weight: bold; color: var(--rose); }
+        .timer-lab { font-size: 0.7rem; color: #bbb; text-transform: uppercase; }
+
+        .compliment-box { background: #fff; padding: 25px; border-radius: 25px; font-style: italic; border-left: 6px solid var(--rose); margin-top: 15px; color: #555; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
+        
+        .hide { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="bg-blobs"></div>
+
+<div class="container" id="screen1">
+    <div style="font-size: 3rem; margin-bottom: 15px;">🌸</div>
+    <h1>Милена</h1>
+    <div class="sub-text">Твоё сердце ждет ответа</div>
+    <p>С самой первой нашей встречи я понял, что ты — особенная. Я хочу, чтобы этот момент стал началом чего-то прекрасного. <br><br><b>Ты согласна стать моей девушкой?</b></p>
+    <div class="btn-wrap">
+        <button class="btn" id="yesBtn" onclick="acceptLove()">ДА!</button>
+        <button class="btn" id="noBtn" onclick="refuseLove()">Нет</button>
+    </div>
+</div>
+
+<div class="container hide" id="screen2">
+    <div class="sub-text">Наша история началась</div>
+    <h1>Мы вместе ❤️</h1>
+    <div class="timer-grid">
+        <div class="timer-box"><span class="timer-val" id="d">0</span><span class="timer-lab">дней</span></div>
+        <div class="timer-box"><span class="timer-val" id="h">0</span><span class="timer-lab">часов</span></div>
+        <div class="timer-box"><span class="timer-val" id="m">0</span><span class="timer-lab">минут</span></div>
+        <div class="timer-box"><span class="timer-val" id="s">0</span><span class="timer-lab">секунд</span></div>
+    </div>
+    <div class="compliment-box" id="compText"></div>
+</div>
+
+<div class="container hide" id="screenRefuse">
+    <div style="font-size: 3rem; margin-bottom: 15px;">✨</div>
+    <h1>Я уважаю твой выбор</h1>
+    <p>Спасибо за честность. Для меня было важно поделиться этим с тобой. Надеюсь, мы останемся в добрых отношениях.</p>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBW44zd70jGFtNmYOcSpSBIJw5yWLljVIQ",
+        authDomain: "milena-38bd0.firebaseapp.com",
+        projectId: "milena-38bd0",
+        storageBucket: "milena-38bd0.firebasestorage.app",
+        messagingSenderId: "530364494530",
+        appId: "1:530364494530:web:1e46f2fc19011e98c6815b",
+        measurementId: "G-8XCXDLGMRN",
+        databaseURL: "https://milena-38bd0-default-rtdb.firebaseio.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const compliments = [
+        "Твоя улыбка — самое теплое, что я знаю.",
+        "Милена, в тебе живет целый мир доброты.",
+        "Ты невероятно красивая, когда мечтаешь.",
+        "С тобой я чувствую себя по-настоящему счастливым.",
+        "Обожаю твой голос и твой смех.",
+        "Ты — самое прекрасное событие в моей жизни.",
+        "Твои глаза светятся ярче любых звезд.",
+        "Люблю тебя больше с каждой секундой."
+    ];
+
+    // Проверка базы при входе
+    db.ref('loveDate').on('value', (snapshot) => {
+        if (snapshot.val()) showTimerScreen(snapshot.val());
+    });
+
+    function acceptLove() {
+        const now = Date.now();
+        db.ref('loveDate').set(now);
+        db.ref('status').set("ACCEPTED");
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }
+
+    function refuseLove() {
+        db.ref('refusals').push({
+            time: new Date().toLocaleString(),
+            user: "Milena"
+        });
+        document.getElementById('screen1').classList.add('hide');
+        document.getElementById('screenRefuse').classList.remove('hide');
+    }
+
+    function showTimerScreen(startTime) {
+        document.getElementById('screen1').classList.add('hide');
+        document.getElementById('screenRefuse').classList.add('hide');
+        document.getElementById('screen2').classList.remove('hide');
+        
+        setInterval(() => {
+            const diff = Date.now() - startTime;
+            document.getElementById('d').innerText = Math.floor(diff / 86400000);
+            document.getElementById('h').innerText = Math.floor((diff / 3600000) % 24);
+            document.getElementById('m').innerText = Math.floor((diff / 60000) % 60);
+            document.getElementById('s').innerText = Math.floor((diff / 1000) % 60);
+        }, 1000);
+
+        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+        document.getElementById('compText').innerText = "Комплимент дня: " + compliments[dayOfYear % compliments.length];
+    }
+</script>
+</body>
+</html>
